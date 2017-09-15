@@ -14,10 +14,12 @@ public class PlayerMovement1 : MonoBehaviour
     public LayerMask whatIsGround;
     //Animator anim;
     public float jumpForce = 700;
+    private gameMaster gm;
 
     void Start ()
     {
         myRigidbody2D = this.GetComponent<Rigidbody2D>();
+        gm = GameObject.FindGameObjectWithTag("GameMaster").GetComponent<gameMaster>();
 
         //anim = GetComponent<Animator>();
     }
@@ -65,5 +67,14 @@ public class PlayerMovement1 : MonoBehaviour
         Vector3 theScale = transform.localScale;
         theScale.x *= -1;
         transform.localScale = theScale;
+    }
+
+    void OnTriggerEnter2D(Collider2D col)
+    {
+        if(col.CompareTag("Coin"))
+        {
+            Destroy(col.gameObject);
+            gm.points += 1;
+        }
     }
 }
