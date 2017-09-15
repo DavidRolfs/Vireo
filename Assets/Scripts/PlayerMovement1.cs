@@ -4,29 +4,66 @@ using UnityEngine;
 
 public class PlayerMovement1 : MonoBehaviour
 {
+    Rigidbody2D myRigidbody2D;
+    public float speed = 1.5f;
+    bool facingRight = true;
+    //public float jump = 20f;
+    bool grounded = false;
+    public Transform groundCheck;
+    float groundRadius = 0.2f;
+    public LayerMask whatIsGround;
+    //Animator anim;
+    public float jumpForce = 700;
 
-    // Use this for initialization
-    void Start()
+    void Start ()
     {
+        myRigidbody2D = this.GetComponent<Rigidbody2D>();
 
+        //anim = GetComponent<Animator>();
     }
 
-    public float speed = 1.5f;
-    public float jump = 20f;
+    void FixedUpdate()
+    {
+        grounded = Physics2D.OverlapCircle(groundCheck.position, groundRadius, whatIsGround);
+        //anim.SetBool("Ground", grounded);
+
+        //anim.SetFloat("vSpeed", myRigidbody2D.velocity.y);
+
+
+        float move = Input.GetAxis("Horizontal");
+
+        myRigidbody2D.velocity = new Vector2(move * speed, myRigidbody2D.velocity.y);
+
+        if(move > 0 && !facingRight)
+        {
+            Flip();
+        }
+        else if(move < 0 && facingRight)
+        {
+            Flip();
+        }
+
+
+        //if (Input.GetKey(KeyCode.UpArrow))
+       // {
+        //    transform.position += Vector3.up * jump * Time.deltaTime;
+       // }
+     }
 
     void Update()
     {
-        if (Input.GetKey(KeyCode.LeftArrow))
+        if(grounded && Input.GetKeyDown(KeyCode.Space))
         {
-            transform.position += Vector3.left * speed * Time.deltaTime;
+            //anim.SetBool("Ground", false);
+            myRigidbody2D.AddForce(new Vector2(0, jumpForce));
         }
-        if (Input.GetKey(KeyCode.RightArrow))
-        {
-            transform.position += Vector3.right * speed * Time.deltaTime;
-        }
-        if (Input.GetKey(KeyCode.UpArrow))
-        {
-            transform.position += Vector3.up * jump * Time.deltaTime;
-        }
+    }
+
+    void Flip()
+    {
+        facingRight = !facingRight;
+        Vector3 theScale = transform.localScale;
+        theScale.x *= -1;
+        transform.localScale = theScale;
     }
 }
