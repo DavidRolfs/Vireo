@@ -76,5 +76,11 @@ public class PlayerMovement1 : MonoBehaviour
             Destroy(col.gameObject);
             gm.points += 1;
         }
+        if(col.CompareTag("Bad"))
+        {
+            Destroy(col.gameObject);
+            gm.points -= 1;
+        }
     }
+
 }
