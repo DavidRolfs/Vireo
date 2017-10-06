@@ -13,7 +13,7 @@ public class PlayerMovement1 : MonoBehaviour
     float groundRadius = 0.2f;
     public LayerMask whatIsGround;
     //Animator anim;
-    public float jumpForce = 700;
+    public float jumpForce = 1700;
     private gameMaster gm;
 
     void Start ()
@@ -54,7 +54,7 @@ public class PlayerMovement1 : MonoBehaviour
 
     void Update()
     {
-        if(grounded && Input.GetKeyDown(KeyCode.Space))
+        if(grounded && Input.GetKeyDown(KeyCode.JoystickButton2)|| grounded && Input.GetKeyDown(KeyCode.Space))
         {
             //anim.SetBool("Ground", false);
             myRigidbody2D.AddForce(new Vector2(0, jumpForce));
